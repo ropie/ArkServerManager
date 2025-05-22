@@ -5,7 +5,7 @@ import 'dotenv/config'
 import db from "../db/connection.js";
 
 //Db Collection
-const dbCollection = "PlayerTest";
+const dbCollection = "PlayerData";
 //old collection is "records"
 
 //This help convert the id from string to ObjectID for the _id
@@ -24,7 +24,7 @@ router.get("/", async (req, res) => {
   let collection = await db.collection(dbCollection);
   let results = await collection.find({}).toArray();
   res.send(results).status(200);
-  //console.log(results);
+  console.log(results);
 });
 
 //This is to get a single record by id
