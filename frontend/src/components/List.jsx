@@ -60,7 +60,7 @@ export default function PlayerList() {
   useEffect(() => {
     async function getRecords() {
       
-      const response = await fetch(`https://arkservermanagerbackend.onrender.com:5050/record/`)
+      const response = await fetch(`https://arkservermanagerbackend.onrender.com/record/`)
       if (!response.ok) {
         const message = `An error occurred: ${response.statusText}`;
         console.error(message);
@@ -76,12 +76,12 @@ export default function PlayerList() {
 
   // This method will delete a record
   async function deleteRecord(id) {
-    await fetch(`https://arkservermanagerbackend.onrender.com:5050/record/${id}`, {
+    await fetch(`https://arkservermanagerbackend.onrender.com/record/${id}`, {
       method: "DELETE",
     });
     const newRecords = records.filter((el) => el._id !== id);
     setRecords(newRecords);
-    console.log(`The URL is https://arkservermanagerbackend.onrender.com:5050/`)
+    console.log(`The URL is https://arkservermanagerbackend.onrender.com/`)
   }
 
   // This method will map out the records on the table
