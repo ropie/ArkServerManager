@@ -1,5 +1,5 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
-import 'dotenv/config'
+import "dotenv/config";
 //import { DB_URL} from process.env;
 
 const uri = process.env.DB_URL || "";
@@ -23,6 +23,6 @@ try {
 }
 
 //Old is let db = client.db("employees")
-let db = client.db("ark");
+let db = client.db("Ark");
 
 export default db;
