@@ -20,6 +20,7 @@ const router = express.Router();
 
 //This section will help get a list of all the records
 router.get("/", async (req, res) => {
+  console.log("Get requested")
   let collection = await db.collection(dbCollection);
   let results = await collection.find({}).toArray();
   res.send(results).status(200);
@@ -28,6 +29,7 @@ router.get("/", async (req, res) => {
 
 //This is to get a single record by id
 router.get("/:id", async (req, res) => {
+  console.log("Get by ID requested")
   let collection = await db.collection(dbCollection);
   let query = { _id: new ObjectId(req.params.id) };
   let result = await collection.findOne(query);
