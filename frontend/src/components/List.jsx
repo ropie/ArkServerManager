@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-const URL = import.meta.env.SERVER_URL;
-
 
 const Record = (props) => (
       <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
@@ -62,10 +60,11 @@ export default function PlayerList() {
   useEffect(() => {
     async function getRecords() {
       
-      const response = await fetch(`https://arkservermanagerbackend.onrender.com/record/`)
+      const response = await fetch(`https://arkservermanagerbackend.onrender.com:5050/record/`)
       if (!response.ok) {
         const message = `An error occurred: ${response.statusText}`;
         console.error(message);
+        console.log("Womp Womp on Get Records")
         return;
       }
       const records = await response.json();
@@ -77,12 +76,12 @@ export default function PlayerList() {
 
   // This method will delete a record
   async function deleteRecord(id) {
-    await fetch(`${URL}/record/${id}`, {
+    await fetch(`https://arkservermanagerbackend.onrender.com:5050/record/${id}`, {
       method: "DELETE",
     });
     const newRecords = records.filter((el) => el._id !== id);
     setRecords(newRecords);
-    console.log(`The URL is ${URL}`)
+    console.log(`The URL is https://arkservermanagerbackend.onrender.com:5050/`)
   }
 
   // This method will map out the records on the table
