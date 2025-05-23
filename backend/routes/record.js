@@ -42,7 +42,7 @@ router.get("/:id", async (req, res) => {
 router.get("/tribe/:tribe", async (req, res) => {
   console.log(`Get tribe requested.  Requested tribe is ${req.params.tribe}`);
   let collection = await db.collection(dbCollection);
-  let results = await collection.find(req.params.tribe).toArray();
+  let results = await collection.find({ tribe: req.params.tribe }).toArray();
   res.send(results).status(200);
 });
 
