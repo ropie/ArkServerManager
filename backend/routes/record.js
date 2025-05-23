@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
 
 //This is to get a single record by id
 router.get("/:id", async (req, res) => {
-  console.log("Get by ID requested");
+  console.log(`Get by ID requested.  Requested id is ${req.params.id}`);
   let collection = await db.collection(dbCollection);
   let query = { _id: new ObjectId(req.params.id) };
   let result = await collection.findOne(query);
@@ -40,13 +40,10 @@ router.get("/:id", async (req, res) => {
 
 //Get Tribe memebers  **Hopefully**
 router.get("/:tribe", async (req, res) => {
-  console.log("Get tribe requested");
+  console.log(`Get tribe requested.  Requested tribe is ${req.params.tribe}`);
   let collection = await db.collection(dbCollection);
-  let query = { tribe: req.params.tribe };
-  let result = await collection.find(query);
-
-  if (!result) res.send("Not Found").status(404);
-  else res.send(result).status(200);
+  let results = await collection.find(req.params.tribe).toArray();
+  res.send(results).status(200);
 });
 
 //This section creates a new record
