@@ -44,7 +44,7 @@ export default function TribeMemberList() {
       if (!response.ok) {
         const message = `An error occurred: ${response.statusText}`;
         console.error(message);
-        console.log("Womp Womp on Get Records");
+        console.log("Womp Womp on Get Tribe");
         return;
       }
       const records = await response.json();
