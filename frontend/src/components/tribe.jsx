@@ -32,32 +32,6 @@ function Status(d) {
   }
 }
 
-function ConvertSectoDay(n) {
-  var day = parseInt(n / (24 * 3600));
-
-  n = n % (24 * 3600);
-  var hour = parseInt(n / 3600);
-
-  n %= 3600;
-  var minutes = n / 60;
-
-  n %= 60;
-  var seconds = n;
-
-  var playTimeConverted =
-    day +
-    " " +
-    "days " +
-    hour +
-    " " +
-    "hours " +
-    minutes.toFixed() +
-    " " +
-    "minutes ";
-
-  return playTimeConverted;
-}
-
 export default function TribeMemberList() {
   const [records, setRecords] = useState([]);
 
@@ -65,7 +39,7 @@ export default function TribeMemberList() {
   useEffect(() => {
     async function getRecords(tribe) {
       const response = await fetch(
-        `https://arkservermanagerbackend.onrender.com/record/${tribe}`
+        `https://arkservermanagerbackend.onrender.com/record/tribe/${tribe}`
       );
       if (!response.ok) {
         const message = `An error occurred: ${response.statusText}`;

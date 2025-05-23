@@ -39,7 +39,7 @@ router.get("/:id", async (req, res) => {
 });
 
 //Get Tribe memebers  **Hopefully**
-router.get("/:tribe", async (req, res) => {
+router.get("/tribe/:tribe", async (req, res) => {
   console.log(`Get tribe requested.  Requested tribe is ${req.params.tribe}`);
   let collection = await db.collection(dbCollection);
   let results = await collection.find(req.params.tribe).toArray();
