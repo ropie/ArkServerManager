@@ -1,15 +1,12 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import './index.css'
-import App from './App.jsx'
+import "./index.css";
+import App from "./App.jsx";
 import PlayerList from "./components/List.jsx";
-//import Record from "./components/ViewPlayer.jsx"
-
+import Record from "./components/ViewPlayer.jsx";
+import TribeMemberList from "./components/tribe.jsx"
 
 const router = createBrowserRouter([
   {
@@ -22,7 +19,7 @@ const router = createBrowserRouter([
       },
     ],
   },
- /*   {
+  {
     path: "/view/:id",
     element: <App />,
     children: [
@@ -31,8 +28,18 @@ const router = createBrowserRouter([
         element: <Record />,
       },
     ],
-  },*/
-  ]);
+  },
+  {
+    path: "/tribe/:tribe",
+    element: <App />,
+    children: [
+      {
+        path: "/tribe/:tribe",
+        element: <TribeMemberList />,
+      },
+    ],
+  },
+]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

@@ -12,7 +12,7 @@ export default function Record() {
   const [isNew, setIsNew] = useState(true);
   const params = useParams();
   const navigate = useNavigate();
-  //Testing changes here.
+
   useEffect(() => {
     async function fetchData() {
       const id = params.id?.toString() || undefined;
@@ -88,6 +88,16 @@ export default function Record() {
       navigate("/");
     }
   }
+
+  /*
+//Close the player Data Screen
+  async function onSubmit(e) {
+   //const person = { ...form };
+  
+    setForm({ charactername: "", tribe: "", charLevel: "" });       
+  navigate("/");
+    }
+  */
 
   // This following section will display the form that takes the input from the user.
   return (
@@ -270,7 +280,7 @@ export default function Record() {
               </tr>
             </tbody>
           </table>
-        </div>
+        </div>{" "}
       </div>
     </>
   );

@@ -1,5 +1,5 @@
 import express from "express";
-import 'dotenv/config'
+import "dotenv/config";
 
 //This will help connect to the database
 import db from "../db/connection.js";
@@ -20,19 +20,30 @@ const router = express.Router();
 
 //This section will help get a list of all the records
 router.get("/", async (req, res) => {
-  console.log("Get requested")
+  console.log("Get requested");
   let collection = await db.collection(dbCollection);
   let results = await collection.find({}).toArray();
   res.send(results).status(200);
-  console.log(results);
+  //console.log(results);
 });
 
 //This is to get a single record by id
 router.get("/:id", async (req, res) => {
-  console.log("Get by ID requested")
+  console.log("Get by ID requested");
   let collection = await db.collection(dbCollection);
   let query = { _id: new ObjectId(req.params.id) };
   let result = await collection.findOne(query);
+
+  if (!result) res.send("Not Found").status(404);
+  else res.send(result).status(200);
+});
+
+//Get Tribe memebers  **Hopefully**
+router.get("/:tribe", async (req, res) => {
+  console.log("Get tribe requested");
+  let collection = await db.collection(dbCollection);
+  let query = { tribe: req.params.tribe };
+  let result = await collection.find(query);
 
   if (!result) res.send("Not Found").status(404);
   else res.send(result).status(200);
