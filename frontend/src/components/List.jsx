@@ -16,7 +16,7 @@ const Record = (props) => (
       <Link to={`/tribe/${props.record.tribe}`}>{props.record.tribe}</Link>
     </td>
         <td className="w-1/7 p-2 align-left [&:has([role=checkbox])]:pr-0">
-      {props.record.offline}
+      {Status(props.record.offline?.toString())}
     </td>
       <td className="w-1/7 p-2 align-left [&:has([role=checkbox])]:pr-0">
       {ConvertSectoDay(props.record.playTime)}
@@ -25,10 +25,8 @@ const Record = (props) => (
 )
 
 function Status(d) {
-    var stringValue = d.toString()
-    console.log(d)
-    let result = stringValue.includes("true")
-    if (d = true) {
+   
+    if (d === "true") {
       return "Offline"
     } else {
       return "Online"

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const Record = (props) => (
   <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
@@ -13,19 +13,16 @@ const Record = (props) => (
       {props.record.charLevel}
     </td>
     <td className="w-1/7 p-2 align-left [&:has([role=checkbox])]:pr-0">
-      {props.record.tribe}
+      Tribe Rank will go here (Owner, Admin, Member)
     </td>
     <td className="w-1/7 p-2 align-left [&:has([role=checkbox])]:pr-0">
-      {props.record.offline}
+      {offlineStatus(props.record.offline?.toString())}
     </td>
   </tr>
 );
 
-function Status(d) {
-  var stringValue = d.toString();
-  console.log(d);
-  let result = stringValue.includes("true");
-  if ((d = true)) {
+function offlineStatus(d) {
+  if ((d === "true")) {
     return "Offline";
   } else {
     return "Online";
@@ -34,25 +31,30 @@ function Status(d) {
 
 export default function TribeMemberList() {
   const [records, setRecords] = useState([]);
-
+  const params = useParams();
   // This method fetches the records from the database.
   useEffect(() => {
-    async function getRecords(tribe) {
+    async function getTribe() {
       const response = await fetch(
-        `https://arkservermanagerbackend.onrender.com/record/tribe/${tribe}`
+        `https://arkservermanagerbackend.onrender.com/record/tribe/${params.tribe}`
       );
       if (!response.ok) {
         const message = `An error occurred: ${response.statusText}`;
         console.error(message);
-        console.log("Womp Womp on Get Tribe");
+        console.log(
+          `Womp Womp on Get Tribe.  Request that was sent is: https://arkservermanagerbackend.onrender.com/record/tribe/${params.tribe}`
+        );
         return;
       }
+      console.log(
+        `Request that was sent is: https://arkservermanagerbackend.onrender.com/record/tribe/${params.tribe}`
+      );
       const records = await response.json();
       setRecords(records);
     }
-    getRecords();
+    getTribe();
     return;
-  }, [records.length]);
+  }, [records.length, params.tribe]);
 
   // This method will map out the records on the table
   function tribeMemberList() {
@@ -69,7 +71,7 @@ export default function TribeMemberList() {
 
   return (
     <>
-      <h3 className="text-lg font-bold p-4">Tribe Members</h3>
+      <h3 className="text-lg font-bold p-4">{params.tribe} Members ({records.length})</h3>
       <div className="border rounded-lg overflow-hidden">
         <div className="relative w-full overflow-auto">
           <table className="w-full caption-bottom text-sm">

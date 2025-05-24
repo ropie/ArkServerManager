@@ -2,111 +2,68 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 //const BACKEND_BASEURL = process.env.RENDER_URL;
 
+function ConvertSectoDay(n) {
+        var day =parseInt( n / (24 * 3600));
+
+        n = n % (24 * 3600);
+        var hour = parseInt(n / 3600);
+
+        n %= 3600;
+        var minutes = n / 60;
+
+        n %= 60;
+        var seconds = n;
+
+        var playTimeConverted = (day + " " + "days " + hour + " " + "hours " 
+                + minutes.toFixed() + " " + "minutes ");
+
+        return playTimeConverted
+    }
+
+
 export default function Record() {
-  const [form, setForm] = useState({
-    charactername: "",
-    tribe: "",
-    level: "",
-    datefirstjoined: "",
-  });
-  const [isNew, setIsNew] = useState(true);
+
   const params = useParams();
   const navigate = useNavigate();
   //Testing changes here.
-  useEffect(() => {
-    async function fetchData() {
-      const id = params.id?.toString() || undefined;
-      if (!id) return;
-      setIsNew(false);
+    const [records, setRecords] = useState([]);
+useEffect(() => {
+    async function getPlayerInfo() {
       const response = await fetch(
-        `https://arkservermanagerbackend.onrender.com/${params.id.toString()}`
+        `https://arkservermanagerbackend.onrender.com/record/${params.id}`
       );
       if (!response.ok) {
-        const message = `An error has occurred: ${response.statusText}`;
+        const message = `An error occurred: ${response.statusText}`;
         console.error(message);
-        console.log("Womp Womp");
+        console.log(
+          `Womp Womp on Get Tribe.  Request that was sent is: https://arkservermanagerbackend.onrender.com/record/${params.id}`
+        );
         return;
       }
-      const record = await response.json();
-      if (!record) {
-        console.warn(`Record with id ${id} not found`);
-        navigate("/");
-        return;
-      }
-      setForm(record);
+      console.log(
+        `Request that was sent is: https://arkservermanagerbackend.onrender.com/record/${params.id}`
+      );
+      const records = await response.json();
+      setRecords(records);
     }
-    fetchData();
+    getPlayerInfo();
     return;
-  }, [params.id, navigate]);
-
-  // These methods will update the state properties.
-  function updateForm(value) {
-    return setForm((prev) => {
-      return { ...prev, ...value };
-    });
-  }
-
-  // This function will handle the submission.
-  async function onSubmit(e) {
-    e.preventDefault();
-    const person = { ...form };
-    try {
-      let response;
-      if (isNew) {
-        // if we are adding a new record we will POST to /record.
-        response = await fetch(
-          `https://arkservermanagerbackend.onrender.com/record`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(person),
-          }
-        );
-      } else {
-        // if we are updating a record we will PATCH to /record/:id.
-        response = await fetch(
-          `https://arkservermanagerbackend.onrender.com/record/${params.id}`,
-          {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(person),
-          }
-        );
-      }
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-    } catch (error) {
-      console.error("A problem occurred with your fetch operation: ", error);
-    } finally {
-      setForm({ charactername: "", tribe: "", charLevel: "" });
-      navigate("/");
-    }
-  }
+  }, [records.length, params.id]);
 
   // This following section will display the form that takes the input from the user.
   return (
-    <>
-      <div className="w-1/2 border rounded-lg overflow-hidden">
+    <> <h3 className="text-lg font-bold p-4">Player Information for {records.charactername}</h3>
+    
+      <div className="border rounded-lg overflow-hidden">
         <div className="relative overflow-auto">
           <table className="w-full caption-bottom text-sm">
             <tbody>
               <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
                 <td className="p-2 align-left [&:has([role=checkbox])]:pr-0">
-                  Player Information
-                </td>
-              </tr>
-              <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                <td className="p-2 align-left [&:has([role=checkbox])]:pr-0">
                   Owner
                 </td>
                 <td className="p-2 align-left [&:has([role=checkbox])]:pr-0">
-                  {form.charactername}
+                  {records.steamxboxpsn}
                 </td>
               </tr>
               <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
@@ -117,7 +74,7 @@ export default function Record() {
                   className="p-2 align-left [&:has([role=checkbox])]:pr-0"
                   colSpan={4}
                 >
-                  {params.implantid}
+                  {records.implantid}
                 </td>
               </tr>
               <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
@@ -128,7 +85,7 @@ export default function Record() {
                   className="p-2 align-left [&:has([role=checkbox])]:pr-0"
                   colSpan={4}
                 >
-                  Gender Var
+                  {records.gender}
                 </td>
               </tr>
               <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
@@ -150,7 +107,7 @@ export default function Record() {
                   className="p-2 align-left [&:has([role=checkbox])]:pr-0"
                   colSpan={4}
                 >
-                  Time Played VAR
+                  {ConvertSectoDay(records.playTime)}
                 </td>
               </tr>
               <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
@@ -161,7 +118,7 @@ export default function Record() {
                   className="p-2 align-left [&:has([role=checkbox])]:pr-0"
                   colSpan={4}
                 >
-                  Date Created Var
+                  {records.datefirstjoined}
                 </td>
               </tr>
               <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
@@ -172,7 +129,7 @@ export default function Record() {
                   className="p-2 align-left [&:has([role=checkbox])]:pr-0"
                   colSpan={4}
                 >
-                  Notes Bool
+                  {records.allnotes?.toString().toUpperCase()}
                 </td>
               </tr>
               <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
@@ -183,7 +140,7 @@ export default function Record() {
                   className="p-2 align-left [&:has([role=checkbox])]:pr-0"
                   colSpan={4}
                 >
-                  BTT SE Bool
+                  {records.bttse?.toString().toUpperCase()}
                 </td>
               </tr>
               <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
@@ -194,7 +151,7 @@ export default function Record() {
                   className="p-2 align-left [&:has([role=checkbox])]:pr-0"
                   colSpan={4}
                 >
-                  BTT Ab Bool
+                  {records.bttab?.toString().toUpperCase()}
                 </td>
               </tr>
               <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
@@ -202,10 +159,10 @@ export default function Record() {
                   BTT Ext Completed
                 </td>
                 <td
-                  cclassName="p-2 align-left [&:has([role=checkbox])]:pr-0"
+                  className="p-2 align-left [&:has([role=checkbox])]:pr-0"
                   colSpan={4}
                 >
-                  BTT Ext Bool
+                  {records.bttext?.toString().toUpperCase()}
                 </td>
               </tr>
               <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
@@ -221,7 +178,7 @@ export default function Record() {
                   Dragon
                 </td>
                 <td className="p-2 align-left [&:has([role=checkbox])]:pr-0">
-                  D_Level
+                  {records.bosses}
                 </td>
                 <td className="p-2 align-left [&:has([role=checkbox])]:pr-0">
                   Overseer
@@ -254,7 +211,7 @@ export default function Record() {
                 <td className="p-2 align-left [&:has([role=checkbox])]:pr-0">
                   Rockwell
                 </td>
-                <td cclassName="p-2 align-left [&:has([role=checkbox])]:pr-0">
+                <td className="p-2 align-left [&:has([role=checkbox])]:pr-0">
                   R_Lvl
                 </td>
               </tr>
@@ -264,7 +221,7 @@ export default function Record() {
                 <td className="p-2 align-left [&:has([role=checkbox])]:pr-0">
                   Titan
                 </td>
-                <td cclassName="p-2 align-left [&:has([role=checkbox])]:pr-0">
+                <td className="p-2 align-left [&:has([role=checkbox])]:pr-0">
                   T_lvl
                 </td>
               </tr>
