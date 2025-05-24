@@ -16,7 +16,8 @@ const Record = (props) => (
       <Link to={`/tribe/${props.record.tribe}`}>{props.record.tribe}</Link>
     </td>
         <td className="w-1/7 p-2 align-left [&:has([role=checkbox])]:pr-0">
-      {Status(props.record.offline?.toString())}
+        <div className={online(props.record.offline?.toString())}>
+      <span class="font-sans text-current leading-none my-0.5 mx-1.5">{Status(props.record.offline?.toString())}</span></div>
     </td>
       <td className="w-1/7 p-2 align-left [&:has([role=checkbox])]:pr-0">
       {ConvertSectoDay(props.record.playTime)}
@@ -31,6 +32,15 @@ function Status(d) {
     } else {
       return "Online"
     }
+}
+
+function online(f) {
+  
+  if ((f === "true")) {
+    return "relative inline-flex w-max items-center border font-sans font-medium rounded-md text-xs p-0.5 shadow-sm bg-red-800 border-red-800 text-red-50";
+  } else {
+    return "relative inline-flex w-max items-center border font-sans font-medium rounded-md text-xs p-0.5 shadow-sm bg-green-800 border-green-800 text-green-50";
+  }
 }
 
 function ConvertSectoDay(n) {

@@ -20,6 +20,22 @@ function ConvertSectoDay(n) {
         return playTimeConverted
     }
 
+    function offlineStatus(d) {
+  if ((d === "true")) {
+    return "Offline";
+  } else {
+    return "Online";
+  }
+}
+
+function online(f) {
+  
+  if ((f === "true")) {
+    return "relative inline-flex w-max items-center border font-sans font-medium rounded-md text-xs p-0.5 shadow-sm bg-red-800 border-red-800 text-red-50";
+  } else {
+    return "relative inline-flex w-max items-center border font-sans font-medium rounded-md text-xs p-0.5 shadow-sm bg-green-800 border-green-800 text-green-50";
+  }
+}
 
 export default function Record() {
 
@@ -52,7 +68,9 @@ useEffect(() => {
 
   // This following section will display the form that takes the input from the user.
   return (
-    <> <h3 className="text-lg font-bold p-4">Player Information for {records.charactername}</h3>
+    <> <h3 className="text-lg font-bold p-4">Player Information for {records.charactername} <div className={online(records.offline?.toString())}>
+      <span class="font-sans text-current leading-none my-0.5 mx-1.5">{offlineStatus(records.offline?.toString())}</span>
+      </div></h3>
     
       <div className="border rounded-lg overflow-hidden">
         <div className="relative overflow-auto">
