@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+const BACKEND_BASEURL = "https://api.ropie.dev"
+
 
 const Record = (props) => (
   <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
@@ -47,25 +49,25 @@ export default function TribeMemberList() {
   useEffect(() => {
     async function getTribe() {
       const response = await fetch(
-        `https://arkservermanagerbackend.onrender.com/record/tribe/${params.tribe}`
+        `${BACKEND_BASEURL}/record/tribe/${params.tribe}`
       );
       if (!response.ok) {
         const message = `An error occurred: ${response.statusText}`;
         console.error(message);
         console.log(
-          `Womp Womp on Get Tribe.  Request that was sent is: https://arkservermanagerbackend.onrender.com/record/tribe/${params.tribe}`
+          `Womp Womp on Get Tribe.  Request that was sent is: ${BACKEND_BASEURL}/record/tribe/${params.tribe}`
         );
         return;
       }
       console.log(
-        `Request that was sent is: https://arkservermanagerbackend.onrender.com/record/tribe/${params.tribe}`
+        `Request that was sent is: ${BACKEND_BASEURL}/record/tribe/${params.tribe}`
       );
       const records = await response.json();
       setRecords(records);
     }
     getTribe();
     return;
-  }, [records.length, params.tribe]);
+  }, [records.length, params.tribe, BACKEND_BASEURL]);
 
   // This method will map out the records on the table
   function tribeMemberList() {
