@@ -20,7 +20,7 @@ const router = express.Router();
 
 //This section will help get a list of all the records
 router.get("/", async (req, res) => {
-  console.log("Get requested");
+  //console.log("Get requested");
   let collection = await db.collection(dbCollection);
   let results = await collection.find({}).toArray();
   res.send(results).status(200);
