@@ -1,27 +1,39 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-//const BACKEND_BASEURL = process.env.RENDER_URL;
+//import 'dotenv/config'
+
+//const BACKEND_BASEURL = "https://arkservermanagerbackend.onrender.com"
+const BACKEND_BASEURL = "https://api.ropie.dev"
+
 
 function ConvertSectoDay(n) {
-        var day =parseInt( n / (24 * 3600));
+  var day = parseInt(n / (24 * 3600));
 
-        n = n % (24 * 3600);
-        var hour = parseInt(n / 3600);
+  n = n % (24 * 3600);
+  var hour = parseInt(n / 3600);
 
-        n %= 3600;
-        var minutes = n / 60;
+  n %= 3600;
+  var minutes = n / 60;
 
-        n %= 60;
-        var seconds = n;
+  n %= 60;
+  var seconds = n;
 
-        var playTimeConverted = (day + " " + "days " + hour + " " + "hours " 
-                + minutes.toFixed() + " " + "minutes ");
+  var playTimeConverted =
+    day +
+    " " +
+    "days " +
+    hour +
+    " " +
+    "hours " +
+    minutes.toFixed() +
+    " " +
+    "minutes ";
 
-        return playTimeConverted
-    }
+  return playTimeConverted;
+}
 
-    function offlineStatus(d) {
-  if ((d === "true")) {
+function offlineStatus(d) {
+  if (d === "true") {
     return "Offline";
   } else {
     return "Online";
@@ -29,8 +41,7 @@ function ConvertSectoDay(n) {
 }
 
 function online(f) {
-  
-  if ((f === "true")) {
+  if (f === "true") {
     return "relative inline-flex w-max items-center border font-sans font-medium rounded-md text-xs p-0.5 shadow-sm bg-red-800 border-red-800 text-red-50";
   } else {
     return "relative inline-flex w-max items-center border font-sans font-medium rounded-md text-xs p-0.5 shadow-sm bg-green-800 border-green-800 text-green-50";
@@ -38,40 +49,43 @@ function online(f) {
 }
 
 export default function Record() {
-
   const params = useParams();
   const navigate = useNavigate();
   //Testing changes here.
-    const [records, setRecords] = useState([]);
-useEffect(() => {
+  const [records, setRecords] = useState([]);
+  useEffect(() => {
     async function getPlayerInfo() {
-      const response = await fetch(
-        `https://arkservermanagerbackend.onrender.com/record/${params.id}`
-      );
+      const response = await fetch(`${BACKEND_BASEURL}/record/${params.id}`);
       if (!response.ok) {
         const message = `An error occurred: ${response.statusText}`;
         console.error(message);
         console.log(
-          `Womp Womp on Get Tribe.  Request that was sent is: https://arkservermanagerbackend.onrender.com/record/${params.id}`
+          `Womp Womp on Get Tribe.  Request that was sent is: ${BACKEND_BASEURL}/record/${params.id}`
         );
         return;
       }
       console.log(
-        `Request that was sent is: https://arkservermanagerbackend.onrender.com/record/${params.id}`
+        `Did it update? Request that was sent is: ${BACKEND_BASEURL}/record/${params.id}`
       );
       const records = await response.json();
       setRecords(records);
     }
     getPlayerInfo();
     return;
-  }, [records.length, params.id]);
+  }, [records.length, params.id, BACKEND_BASEURL]);
 
   // This following section will display the form that takes the input from the user.
   return (
-    <> <h3 className="text-lg font-bold p-4">Player Information for {records.charactername} <div className={online(records.offline?.toString())}>
-      <span class="font-sans text-current leading-none my-0.5 mx-1.5">{offlineStatus(records.offline?.toString())}</span>
-      </div></h3>
-    
+    <>
+      {" "}
+      <h3 className="text-lg font-bold p-4">
+        Player Information for {records.charactername}{" "}
+        <div className={online(records.offline?.toString())}>
+          <span className="font-sans text-current leading-none my-0.5 mx-1.5">
+            {offlineStatus(records.offline?.toString())}
+          </span>
+        </div>
+      </h3>
       <div className="border rounded-lg overflow-hidden">
         <div className="relative overflow-auto">
           <table className="w-full caption-bottom text-sm">
@@ -114,7 +128,7 @@ useEffect(() => {
                   className="p-2 align-left [&:has([role=checkbox])]:pr-0"
                   colSpan={4}
                 >
-                  Recent Server Var
+                  Most recent server will go here
                 </td>
               </tr>
               <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
@@ -210,18 +224,18 @@ useEffect(() => {
                   Broodmother
                 </td>
                 <td className="p-2 align-left [&:has([role=checkbox])]:pr-0">
-                  B_Level
+                  CHANGE ME
                 </td>
                 <td className="p-2 align-left [&:has([role=checkbox])]:pr-0">
                   Manticore
                 </td>
                 <td className="p-2 align-left [&:has([role=checkbox])]:pr-0">
-                  Ma_lvl
+                  CHANGE ME
                 </td>
               </tr>
               <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
                 <td className="p-2 align-left [&:has([role=checkbox])]:pr-0">
-                  Monkey
+                  Megapithecus
                 </td>
                 <td className="p-2 align-left [&:has([role=checkbox])]:pr-0">
                   M_level

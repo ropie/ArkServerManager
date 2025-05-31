@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+const BACKEND_BASEURL = "https://api.ropie.dev"
 
 const Record = (props) => (
       <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
@@ -17,7 +18,7 @@ const Record = (props) => (
     </td>
         <td className="w-1/7 p-2 align-left [&:has([role=checkbox])]:pr-0">
         <div className={online(props.record.offline?.toString())}>
-      <span class="font-sans text-current leading-none my-0.5 mx-1.5">{Status(props.record.offline?.toString())}</span></div>
+      <span className="font-sans text-current leading-none my-0.5 mx-1.5">{Status(props.record.offline?.toString())}</span></div>
     </td>
       <td className="w-1/7 p-2 align-left [&:has([role=checkbox])]:pr-0">
       {ConvertSectoDay(props.record.playTime)}
@@ -68,7 +69,7 @@ export default function PlayerList() {
   useEffect(() => {
     async function getRecords() {
       
-      const response = await fetch(`https://arkservermanagerbackend.onrender.com/record/`)
+      const response = await fetch(`${BACKEND_BASEURL}/record/`)
       if (!response.ok) {
         const message = `An error occurred: ${response.statusText}`;
         console.error(message);
@@ -84,12 +85,12 @@ export default function PlayerList() {
 
   // This method will delete a record
   async function deleteRecord(id) {
-    await fetch(`https://arkservermanagerbackend.onrender.com/record/${id}`, {
+    await fetch(`${BACKEND_BASEURL}/record/${id}`, {
       method: "DELETE",
     });
     const newRecords = records.filter((el) => el._id !== id);
     setRecords(newRecords);
-    console.log(`The URL is https://arkservermanagerbackend.onrender.com/`)
+    console.log(`The URL is ${BACKEND_BASEURL}`)
   }
 
   // This method will map out the records on the table

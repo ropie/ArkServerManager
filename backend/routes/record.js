@@ -38,7 +38,7 @@ router.get("/:id", async (req, res) => {
   else res.send(result).status(200);
 });
 
-//Get Tribe memebers  **Hopefully**
+//Get Tribe memeber list
 router.get("/tribe/:tribe", async (req, res) => {
   console.log(`Get tribe requested.  Requested tribe is ${req.params.tribe}`);
   let collection = await db.collection(dbCollection);
@@ -46,7 +46,7 @@ router.get("/tribe/:tribe", async (req, res) => {
   res.send(results).status(200);
 });
 
-//This section creates a new record
+//This section creates a new record. Need to change this to match the original backend so there is only 1.
 router.post("/", async (req, res) => {
   try {
     let newDocument = {
@@ -63,7 +63,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-//This section is to update a record
+//This section is to update a record  **Should be able to delete since we won't be updating players.**
 router.patch("/:id", async (req, res) => {
   try {
     const query = { _id: new ObjectId(req.params.id) };
@@ -84,7 +84,7 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
-//This section is to delete a record
+//This section is to delete a record **Should be able to delete since we won't be deleting player records**
 router.delete("/:id", async (req, res) => {
   try {
     const query = { _id: new ObjectId(req.params.id) };
@@ -98,5 +98,92 @@ router.delete("/:id", async (req, res) => {
     res.status(500).send("Error deleting record");
   }
 });
+
+
+//The below are from the original backend api.  Will need to test in dev kit.
+
+//Adding new players when first joining server
+app.post(`/players/add/:id`, (req, res) => {
+  const newPlayer = req.body;
+  db.collection(dbCollection)
+    .findOneAndUpdate(
+      { implantid: req.params.id },
+      {
+        $set: newPlayer,
+      },
+      { upsert: true, returnNewDocument: true }
+    )
+    .then((result) => {
+      res.status(200).json(result);
+      console.log(
+        "-- New player Information added --"
+      );
+      console.log(updates);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: `Could not add player` });
+      console.log("Error adding player information");
+    });
+});
+
+
+//Updates players when they respawn.
+app.post(`/players/update/:id`, (req, res) => {
+  const updates = req.body;
+
+  db.collection(dbCollection)
+    .findOneAndUpdate(
+      { implantid: req.params.id },
+      {
+        $set: {
+          charactername: req.body.charactername,
+          implantid: req.body.implantid,
+          charLevel: req.body.charLevel,
+          tribe: req.body.tribe,
+          gender: req.body.gender,
+          allnotes: req.body.allnotes,
+          bttse: req.body.bttse,
+          bttab: req.body.bttab,
+          bttext: req.body.bttext,
+          chibiLevel: req.body.chibiLevel,
+          bosses: req.body.bosses,
+          offline: req.body.offline,
+        },
+        $inc: { playTime: req.body.playTime },
+      },
+      { upsert: true, returnNewDocument: true }
+    )
+    .then((result) => {
+      res.status(200).json(result);
+      console.log("Player Information Updated");
+    })
+    .catch((err) => {
+      res.status(500).json({ error: `Could not update player` });
+      console.log("Error updating player information");
+    });
+});
+
+//Adding to tokens to players accounts by EOS ID
+app.post(`/tokens/:eos`, (req, res) => {
+  const updates = req.body;
+
+  db.collection(playerData)
+    .findOneAndUpdate(
+      { eosid: req.params.eos },
+      { $inc: updates },
+      { upsert: true, returnNewDocument: true }
+    )
+    .then((result) => {
+      res.status(200).json(result);
+      console.log("Tokens added");
+      console.log(updates);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: `Could not update player` });
+      console.log("Error adding player information");
+      console.log(updates);
+    });
+});
+
 
 export default router;
