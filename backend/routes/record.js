@@ -103,7 +103,7 @@ router.delete("/:id", async (req, res) => {
 //The below are from the original backend api.  Will need to test in dev kit.
 
 //Adding new players when first joining server
-app.post(`/players/add/:id`, (req, res) => {
+router.post(`/players/add/:id`, (req, res) => {
   const newPlayer = req.body;
   db.collection(dbCollection)
     .findOneAndUpdate(
@@ -128,7 +128,7 @@ app.post(`/players/add/:id`, (req, res) => {
 
 
 //Updates players when they respawn.
-app.post(`/players/update/:id`, (req, res) => {
+router.post(`/players/update/:id`, (req, res) => {
   const updates = req.body;
 
   db.collection(dbCollection)
@@ -164,7 +164,7 @@ app.post(`/players/update/:id`, (req, res) => {
 });
 
 //Adding to tokens to players accounts by EOS ID
-app.post(`/tokens/:eos`, (req, res) => {
+router.post(`/tokens/:eos`, (req, res) => {
   const updates = req.body;
 
   db.collection(playerData)
