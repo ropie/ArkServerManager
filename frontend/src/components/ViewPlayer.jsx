@@ -76,7 +76,7 @@ export default function Record() {
   // This following section will display the form that takes the input from the user.
   return (
     <>
-      {" "}
+      <div className="w-full px-5">
       <h3 className="text-lg font-bold p-4">
         Player Information for {records.charactername}{" "}
         <div className={online(records.offline?.toString())}>
@@ -259,7 +259,7 @@ export default function Record() {
             </tbody>
           </table>
         </div>
-      </div>
+      </div></div>
     </>
   );
 }

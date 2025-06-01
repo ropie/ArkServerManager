@@ -84,6 +84,7 @@ export default function TribeMemberList() {
 
   return (
     <>
+    <div className="w-full px-5">
       <h3 className="text-lg font-bold p-4">{params.tribe} Members ({records.length})</h3>
       <div className="border rounded-lg overflow-hidden">
         <div className="relative w-full overflow-auto">
@@ -112,7 +113,7 @@ export default function TribeMemberList() {
             </tbody>
           </table>
         </div>
-      </div>
+      </div></div>
     </>
   );
 }
