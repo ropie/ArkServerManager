@@ -7,6 +7,7 @@ import App from "./App.jsx";
 import PlayerList from "./components/List.jsx";
 import Record from "./components/ViewPlayer.jsx";
 import TribeMemberList from "./components/tribe.jsx"
+import Dashboard from "./components/Dashboard.jsx";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,16 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
+        element: <Dashboard />,
+      },
+    ],
+  },
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      {
+        path: "/characters",
         element: <PlayerList />,
       },
     ],

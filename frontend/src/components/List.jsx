@@ -108,7 +108,8 @@ export default function PlayerList() {
 
   return (
     <>
-      <h3 className="text-lg font-bold p-4">Total player count: {playerList().length}</h3>
+    <div className="w-full px-5">
+      <h3 className="text-lg font-bold p-2">Total player count: {playerList().length}</h3>
       <div className="border rounded-lg overflow-hidden">
         <div className="relative w-full overflow-auto">
           <table className="w-full caption-bottom text-sm">
@@ -139,7 +140,7 @@ export default function PlayerList() {
             </tbody>
           </table>
         </div>
-      </div>
+      </div></div>
     </>
   )
 }
