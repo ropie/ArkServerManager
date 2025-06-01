@@ -8,7 +8,7 @@ function Dashboard() {
       <div className="w-full px-5">
         <h1 className="text-xl text-zinc-800 font-medium">
           This is the Dashboard page. Server stats and other stuff will go here.
-          For now, I only have the player list working. Links for the other stuff do not work
+          For now, only links that work are Dashboard and Characters. Links for the other stuff do not work
           yet. But they will soon. :-)
         </h1>
 
