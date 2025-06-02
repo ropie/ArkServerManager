@@ -21,12 +21,16 @@ const router = express.Router();
 //This section will help get a list of all the records
 router.get("/", async (req, res) => {
   //console.log("Get requested");
-  const PAGE_SIZE = 25
-  const page = parseInt(req.query.page || "0")
+  const PAGE_SIZE = 25;
+  const page = parseInt(req.query.page || "0");
   let collection = await db.collection(dbCollection);
-  let results = await collection.find({}).limit(PAGE_SIZE).skip(PAGE_SIZE * page).toArray();
+  let results = await collection
+    .find({})
+    .limit(PAGE_SIZE)
+    .skip(PAGE_SIZE * page)
+    .toArray();
   res.send(results).status(200);
-  console.log(results);
+  //console.log(results);
 });
 
 //This is to get a single record by id
