@@ -22,15 +22,19 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   //console.log("Get requested");
   const PAGE_SIZE = 25;
-  const page = parseInt(req.query.page || "2"); //Testing loading 2nd group of 25
+  const page = parseInt(req.query.page || "0"); //Testing loading 2nd group of 25
   let collection = await db.collection(dbCollection);
+  const totalPlayers = await collection.countDocuments({});
+  const totalPages = Math.ceil(totalPlayers / PAGE_SIZE);
   let results = await collection
     .find({})
     .limit(PAGE_SIZE)
     .skip(PAGE_SIZE * page)
     .toArray();
-  res.send(results).status(200);
-  //console.log(`Skip amount is ${PAGE}`);
+  res.send(results, totalPlayers, totalPages).status(200);
+  console.log(
+    `Total player count is ${totalPlayers} and total pages is ${totalPages}`
+  );
 });
 
 //This is to get a single record by id
