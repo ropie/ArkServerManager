@@ -21,10 +21,12 @@ const router = express.Router();
 //This section will help get a list of all the records
 router.get("/", async (req, res) => {
   //console.log("Get requested");
+  const PAGE_SIZE = 25
+  const page = parseInt(req.query.page || "0")
   let collection = await db.collection(dbCollection);
-  let results = await collection.find({}).toArray();
+  let results = await collection.find({}).limit(PAGE_SIZE).skip(PAGE_SIZE * page).toArray();
   res.send(results).status(200);
-  //console.log(results);
+  console.log(results);
 });
 
 //This is to get a single record by id
@@ -99,7 +101,6 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-
 //The below are from the original backend api.  Will need to test in dev kit.
 
 //Adding new players when first joining server
@@ -115,9 +116,7 @@ router.post(`/players/add/:id`, (req, res) => {
     )
     .then((result) => {
       res.status(200).json(result);
-      console.log(
-        "-- New player Information added --"
-      );
+      console.log("-- New player Information added --");
       console.log(updates);
     })
     .catch((err) => {
@@ -125,7 +124,6 @@ router.post(`/players/add/:id`, (req, res) => {
       console.log("Error adding player information");
     });
 });
-
 
 //Updates players when they respawn.
 router.post(`/players/update/:id`, (req, res) => {
@@ -184,6 +182,5 @@ router.post(`/tokens/:eos`, (req, res) => {
       console.log(updates);
     });
 });
-
 
 export default router;
