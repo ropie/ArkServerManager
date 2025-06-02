@@ -74,7 +74,7 @@ function ConvertSectoDay(n) {
 export default function PlayerList() {
   const [records, setRecords] = useState([]);
 
-  // This method fetches the records from the database.
+  // This method fetches the records from the database.  Need to test changes here for pagination.
   useEffect(() => {
     async function getRecords() {
       const response = await fetch(`${BACKEND_BASEURL}/record/`);

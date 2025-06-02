@@ -42,7 +42,8 @@ const App = () => {
         <NavLink to="/characters">
           <SidebarItem icon={<BarChart3 size={20} />} text="Characters" />
         </NavLink>
-        <SidebarItem icon={<IoAccessibility size={20} />} text="Players" />
+        <NavLink to="/players">
+        <SidebarItem icon={<IoAccessibility size={20} />} text="Players" /></NavLink>
         <SidebarItem icon={<BarChart3 size={20} />} text="Tribes" />
         <hr className="my-3" />
         <SidebarItem icon={<Settings size={20} />} text="Settings" />

@@ -4,10 +4,11 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import "./index.css";
 import App from "./App.jsx";
-import PlayerList from "./components/List.jsx";
+import CharacterList from "./components/CharacterList.jsx";
 import Record from "./components/ViewPlayer.jsx";
 import TribeMemberList from "./components/tribe.jsx"
 import Dashboard from "./components/Dashboard.jsx";
+import PlayerList from "./components/PlayerList.jsx";
 
 const router = createBrowserRouter([
   {
@@ -26,7 +27,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/characters",
-        element: <PlayerList />,
+        element: <CharacterList />,
       },
     ],
   },
@@ -47,6 +48,16 @@ const router = createBrowserRouter([
       {
         path: "/tribe/:tribe",
         element: <TribeMemberList />,
+      },
+    ],
+  },
+    {
+    path: "/players",
+    element: <App />,
+    children: [
+      {
+        path: "/players",
+        element: <PlayerList />,
       },
     ],
   },
