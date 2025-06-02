@@ -19,7 +19,16 @@ The router will be added as a middleware and will take control of the requests s
 const router = express.Router();
 
 //This section will help get a list of all the records
-router.get("/", async (req, res) => {
+router.get("/characters", async (req, res) => {
+  //console.log("Get requested");
+  let collection = await db.collection(dbCollection);
+  let results = await collection
+    .find({})
+    .toArray();
+  res.send(results).status(200);
+   });
+
+router.get("/players", async (req, res) => {
   //console.log("Get requested");
   const PAGE_SIZE = 25;
   const page = parseInt(req.query.page || "0"); 
