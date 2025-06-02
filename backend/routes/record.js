@@ -22,7 +22,7 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   //console.log("Get requested");
   const PAGE_SIZE = 25;
-  const page = parseInt(req.query.page || "0");
+  const page = parseInt(req.query.page || "2"); //Testing loading 2nd group of 25
   let collection = await db.collection(dbCollection);
   let results = await collection
     .find({})
@@ -30,7 +30,7 @@ router.get("/", async (req, res) => {
     .skip(PAGE_SIZE * page)
     .toArray();
   res.send(results).status(200);
-  //console.log(results);
+  //console.log(`Skip amount is ${PAGE}`);
 });
 
 //This is to get a single record by id

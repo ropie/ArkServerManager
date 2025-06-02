@@ -39,7 +39,10 @@ const App = () => {
             alert
           />
         </NavLink>
-        <NavLink to="/characters">
+        <NavLink to={{
+          pathname: "/characters",
+          search : "?page=2",
+        }}>
           <SidebarItem icon={<BarChart3 size={20} />} text="Characters" />
         </NavLink>
         <SidebarItem icon={<IoAccessibility size={20} />} text="Players" />
