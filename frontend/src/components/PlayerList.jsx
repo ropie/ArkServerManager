@@ -72,12 +72,12 @@ function ConvertSectoDay(n) {
 }
 
 export default function PlayerList() {
-  const [records, setRecords] = useState([]);
+  const [players, setPlayers] = useState([]);
 
-  // This method fetches the records from the database.  Need to test changes here for pagination.
+  /*/ This method fetches the records from the database.  Need to test changes here for pagination.
   useEffect(() => {
     async function getRecords() {
-      const response = await fetch(`${BACKEND_BASEURL}/record/`);
+      const response = await fetch(`${BACKEND_BASEURL}/record/players`);
       if (!response.ok) {
         const message = `An error occurred: ${response.statusText}`;
         console.error(message);
@@ -90,17 +90,17 @@ export default function PlayerList() {
     }
     getRecords();
     return;
-  }, [records.length]);
+  }, [records.length]); */
 
-  // This method will delete a record
-  async function deleteRecord(id) {
-    await fetch(`${BACKEND_BASEURL}/record/${id}`, {
-      method: "DELETE",
-    });
-    const newRecords = records.filter((el) => el._id !== id);
-    setRecords(newRecords);
-    console.log(`The URL is ${BACKEND_BASEURL}`);
-  }
+  useEffect (() => {
+    fetch(`${BACKEND_BASEURL}/record/players`)
+    .then((response) => response.json())
+    .then(({totalPlayers, totalPages}) => {
+      console.log(totalPages, totalPlayers)
+    })
+  }, [])
+
+  
 
   // This method will map out the records on the table
   function playerList() {
@@ -117,42 +117,7 @@ export default function PlayerList() {
 
   return (
     <>
-      <div className="w-full px-5 pb-4">
-        <h3 className="text-lg font-bold p-2">
-          Total player count: {playerList().length}
-        </h3>
-        <div className="border rounded-lg overflow-hidden">
-          <div className="relative w-full overflow-auto">
-            <table className="w-full caption-bottom text-sm">
-              <thead className="[&_tr]:border-b">
-                <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                  <th className="w-1/6 h-12 px-4 text-left align-left font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
-                    Implant ID
-                  </th>
-                  <th className="w-1/6 h-12 px-4 text-left align-left font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
-                    Character Name
-                  </th>
-                  <th className="w-1/6 h-12 px-4 text-left align-left font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
-                    Level
-                  </th>
-                  <th className="w-1/6 h-12 px-4 text-left align-left font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
-                    Tribe
-                  </th>
-                  <th className="w-1/6 h-12 px-4 text-left align-left font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
-                    Status
-                  </th>
-                  <th className="w-1/6 h-12 px-4 text-left align-left font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
-                    Play Time
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="[&_tr:last-child]:border-0">
-                {playerList()}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+      
     </>
   );
 }

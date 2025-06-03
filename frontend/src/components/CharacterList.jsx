@@ -77,7 +77,7 @@ export default function CharacterList() {
   // This method fetches the records from the database.
   useEffect(() => {
     async function getRecords() {
-      const response = await fetch(`${BACKEND_BASEURL}/record/`);
+      const response = await fetch(`${BACKEND_BASEURL}/record/characters`);
       if (!response.ok) {
         const message = `An error occurred: ${response.statusText}`;
         console.error(message);
@@ -119,7 +119,7 @@ export default function CharacterList() {
     <>
       <div className="w-full px-5 pb-4">
         <h3 className="text-lg font-bold p-2">
-          Total player count: {playerList().length}
+          Total character count: {playerList().length}
         </h3>
         <div className="border rounded-lg overflow-hidden">
           <div className="relative w-full overflow-auto">

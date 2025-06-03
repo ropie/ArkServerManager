@@ -40,7 +40,11 @@ router.get("/players", async (req, res) => {
     .limit(PAGE_SIZE)
     .skip(PAGE_SIZE * page)
     .toArray();
-  res.send(results, totalPlayers, totalPages).status(200);
+  res.json({
+    totalPages: totalPages,
+    totalPlayers: totalPlayers,
+    results: results,
+  })
   console.log(
     `Total player count is ${totalPlayers} and total pages is ${totalPages}`
   );
