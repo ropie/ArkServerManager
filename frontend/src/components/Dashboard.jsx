@@ -10,7 +10,7 @@ function Dashboard() {
           This is the Dashboard page. Server stats and other stuff will go here.
           For now, only links that work are Dashboard and Characters. Links for
           the other stuff do not work yet. But they will soon. :-) Working on
-          pagination for the character list which is why only 25 characters are
+          pagination for the Player List which is why only 25 players are
           showing.
         </h1>
 

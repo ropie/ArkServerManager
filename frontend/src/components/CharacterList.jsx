@@ -86,7 +86,6 @@ export default function CharacterList() {
       }
       const records = await response.json();
       setRecords(records);
-      console.log(records);
     }
     getRecords();
     return;
@@ -103,7 +102,7 @@ export default function CharacterList() {
   }
 
   // This method will map out the records on the table
-  function playerList() {
+  function characterList() {
     return records.map((record) => {
       return (
         <Record
@@ -119,7 +118,7 @@ export default function CharacterList() {
     <>
       <div className="w-full px-5 pb-4">
         <h3 className="text-lg font-bold p-2">
-          Total character count: {playerList().length}
+          Total character count: {characterList().length}
         </h3>
         <div className="border rounded-lg overflow-hidden">
           <div className="relative w-full overflow-auto">
@@ -147,7 +146,7 @@ export default function CharacterList() {
                 </tr>
               </thead>
               <tbody className="[&_tr:last-child]:border-0">
-                {playerList()}
+                {characterList()}
               </tbody>
             </table>
           </div>
