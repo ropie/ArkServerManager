@@ -74,42 +74,39 @@ export default function PlayerList() {
   };
 
   const goToNext = () => {
-    setpageNumber(Math.min(totalpages, pageNumber + 1));
+    setpageNumber(Math.min(totalpages -1  , pageNumber + 1));
+    console.log(pageNumber);
   };
 
   return (
     <>
       <div className="w-auto px-5 pb-4">
-        
-          <div className="relative w-auto overflow-auto">
-            <table className="table-auto border-collapse border border-zinc-400">
-              <thead className="[&_tr]:border-b">
-                <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                  <th className="w-auto pr-10 pl-1 text-left align-left font-medium text-muted-foreground">
-                    Steam/XBox/PSN Name
-                  </th>
-                  <th className="w-auto pr-10 pl-1 text-left align-left font-medium text-muted-foreground">
-                    Character Name
-                  </th>
-                  <th className="w-auto pr-10 pl-1 text-left align-left font-medium text-muted-foreground">
-                    Tokens
-                  </th>
-                  <th className="w-auto pr-10 pl-1 text-left align-left font-medium text-muted-foreground">
-                    Something
-                  </th>
-                  <th className="w-auto pr-10 pl-1 text-left align-left font-medium text-muted-foreground">
-                    Something
-                  </th>
-                  <th className="w-auto pr-10 pl-1 text-left align-left font-medium text-muted-foreground">
-                    Something
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="[&_tr:last-child]:border-0">
-                {playerList()}
-              </tbody>
-            </table>
-          
+        <div className="relative w-auto overflow-auto">
+          <table className="table-auto border-collapse border border-zinc-400">
+            <thead className="[&_tr]:border-b">
+              <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                <th className="w-auto pr-10 pl-1 text-left align-left font-medium text-muted-foreground">
+                  Steam/XBox/PSN Name
+                </th>
+                <th className="w-auto pr-10 pl-1 text-left align-left font-medium text-muted-foreground">
+                  Character Name
+                </th>
+                <th className="w-auto pr-10 pl-1 text-left align-left font-medium text-muted-foreground">
+                  Tokens
+                </th>
+                <th className="w-auto pr-10 pl-1 text-left align-left font-medium text-muted-foreground">
+                  Something
+                </th>
+                <th className="w-auto pr-10 pl-1 text-left align-left font-medium text-muted-foreground">
+                  Something
+                </th>
+                <th className="w-auto pr-10 pl-1 text-left align-left font-medium text-muted-foreground">
+                  Something
+                </th>
+              </tr>
+            </thead>
+            <tbody className="[&_tr:last-child]:border-0">{playerList()}</tbody>
+          </table>
         </div>
 
         {/*Pagination imported from the web.  Need to make it work... Maybe*/}
@@ -133,7 +130,7 @@ export default function PlayerList() {
               <p className="text-sm text-gray-700">
                 Showing{" "}
                 <span className="font-medium">{pageNumber * 25 + 1}</span> to{" "}
-                <span className="font-medium">{(pageNumber + 1) * 25}</span> of{" "}
+                <span className="font-medium">{ Math.min(totalplayers, (pageNumber + 1) * 25) } </span> of{" "}
                 <span className="font-medium">{totalplayers}</span> results
               </p>
             </div>
