@@ -4,26 +4,26 @@ const BACKEND_BASEURL = "https://api.ropie.dev";
 
 const Record = (props) => (
   <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-    <td className="w-1/7 p-2 align-left">
+    <td className="w-1/6 p-1 align-left">
       <Link to={`/view/${props.record._id}`}> {props.record.implantid}</Link>
     </td>
-    <td className="w-1/7 p-2 align-left [&:has([role=checkbox])]:pr-0">
+    <td className="w-1/6 p-1 align-left">
       {props.record.charactername}
     </td>
-    <td className="w-1/7 p-2 align-left [&:has([role=checkbox])]:pr-0">
+    <td className="w-1/6 p-1 align-left">
       {props.record.charLevel}
     </td>
-    <td className="w-1/7 p-2 align-left [&:has([role=checkbox])]:pr-0">
+    <td className="w-1/6 p-1 align-left">
       <Link to={`/tribe/${props.record.tribe}`}>{props.record.tribe}</Link>
     </td>
-    <td className="w-1/7 p-2 align-left [&:has([role=checkbox])]:pr-0">
+    <td className="w-1/6 p-1 align-left">
       <div className={online(props.record.offline?.toString())}>
         <span className="font-sans text-current leading-none my-0.5 mx-1.5">
           {Status(props.record.offline?.toString())}
         </span>
       </div>
     </td>
-    <td className="w-1/7 p-2 align-left [&:has([role=checkbox])]:pr-0">
+    <td className="w-1/6 p-1 align-left">
       {ConvertSectoDay(props.record.playTime)}
     </td>
   </tr>
@@ -125,7 +125,7 @@ export default function CharacterList() {
             <table className="w-full caption-bottom text-sm">
               <thead className="[&_tr]:border-b">
                 <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                  <th className="w-1/6 h-12 px-4 text-left align-left font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
+                  <th className="w-1/6 p-1  text-left align-left font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
                     Implant ID
                   </th>
                   <th className="w-1/6 h-12 px-4 text-left align-left font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">

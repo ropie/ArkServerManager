@@ -18,7 +18,7 @@ The router will be added as a middleware and will take control of the requests s
 */
 const router = express.Router();
 
-//This section will help get a list of all the records
+//This section will help get a list of all the characters
 router.get("/characters", async (req, res) => {
   //console.log("Get requested");
   let collection = await db.collection(dbCollection);
@@ -28,6 +28,7 @@ router.get("/characters", async (req, res) => {
   res.send(results).status(200);
    });
 
+   //This is to get all the players. (EOSIDs)
 router.get("/players", async (req, res) => {
   //console.log("Get requested");
   const PAGE_SIZE = 25;
