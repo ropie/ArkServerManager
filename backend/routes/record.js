@@ -37,6 +37,7 @@ router.get("/players", async (req, res) => {
   const page = parseInt(req.query.page || "0");
   let collection = await db.collection(dbCollection);
   const totalPlayers = await collection.countDocuments({});
+  const totalplayers = await totalPlayers.toArray()
   const totalPages = Math.ceil(totalPlayers / PAGE_SIZE);
   let results = await collection
     .find({})
@@ -49,7 +50,7 @@ router.get("/players", async (req, res) => {
     results: results,
   });
   console.log(
-    `Total player count is ${totalPlayers} and total pages is ${totalPages}`
+    `Total player count is ${totalPlayers} and total pages is ${totalPages} and total unique players is ${totalplayers.lenth}`
   );
   for await (const doc of agg) {
   console.log(doc);}
