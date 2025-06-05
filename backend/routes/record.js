@@ -51,7 +51,8 @@ router.get("/players", async (req, res) => {
   console.log(
     `Total player count is ${totalPlayers} and total pages is ${totalPages}`
   );
-  console.log(`Total unique EOSIDs is ${agg}`);
+  for await (const doc of agg) {
+  console.log(doc);}
 });
 
 //This is to get a single record by id
