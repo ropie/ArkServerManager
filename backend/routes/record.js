@@ -46,12 +46,12 @@ router.get("/players", async (req, res) => {
     const aggCursor = collection.aggregate(agg);
     
     await aggCursor.forEach((uniqueeosidtotal) => {
-      console.log(`total unique eosid is ${uniqueeosidtotal.count}`);
+      console.log(`total unique eosid is ${uniqueeosidtotal.uniqueeosid}`);
     });
   }
 
   //console.log("Get requested");
-  const agg = [{ $group: { _id: "$eosid", count: { $sum: 1 } } }];
+  //const agg = [{ $group: { _id: "$eosid", count: { $sum: 1 } } }];
   const PAGE_SIZE = 25;
   const page = parseInt(req.query.page || "0");
   let collection = await db.collection(dbCollection);
@@ -71,8 +71,7 @@ router.get("/players", async (req, res) => {
   console.log(
     `Total player count is ${totalPlayers} and total pages is ${totalPages} and total unique players is ${eosidcount()}`
   );
-  for await (const doc of agg) {
-  console.log(doc);}
+
 });
 
 //This is to get a single record by id
