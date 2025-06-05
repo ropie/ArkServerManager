@@ -31,7 +31,21 @@ router.get("/characters", async (req, res) => {
 //const result = await cursor.toArray();
 
 router.get("/players", async (req, res) => {
-  //console.log("Get requested");
+
+
+  async function eosidcount() {
+    
+    const agg = [{ $group: { _id: "$eosid", count: { $sum: 1 } } }];
+
+    const aggCursor = collection.aggregate(agg)
+
+    await aggCursor.forEach(uniqueeosid => {
+      console.log(`total unique eosid is ${uniqueeosid.count}`)
+    })
+    
+  }
+
+   //console.log("Get requested");
   const agg = [{ $group: { _id: "$eosid", count: { $sum: 1 } } }];
   const PAGE_SIZE = 25;
   const page = parseInt(req.query.page || "0");
@@ -50,7 +64,7 @@ router.get("/players", async (req, res) => {
     results: results,
   });
   console.log(
-    `Total player count is ${totalPlayers} and total pages is ${totalPages} and total unique players is ${totalplayers.lenth}`
+    `Total player count is ${totalPlayers} and total pages is ${totalPages} and total unique players is ${eosidcount()}`
   );
   for await (const doc of agg) {
   console.log(doc);}
