@@ -22,40 +22,21 @@ const router = express.Router();
 router.get("/characters", async (req, res) => {
   //console.log("Get requested");
   let collection = await db.collection(dbCollection);
-  let results = await collection
-    .find({})
-    .toArray();
+  let results = await collection.find({}).toArray();
   res.send(results).status(200);
-   });
+});
 
-   //This is to get all the players. (EOSIDs)
-
-const agg = [
-  {
-    '$group': {
-      '_id': '$eosid'
-    }
-  }, {
-    '$count': 'uniqueEosIdCount'
-  }
-];
+//This is to get all the players. (EOSIDs)
 
 //const result = await cursor.toArray();
 
-
 router.get("/players", async (req, res) => {
   //console.log("Get requested");
+  const agg = [{ $group: { _id: "$eosid", count: { $sum: 1 } } }];
   const PAGE_SIZE = 25;
-  const page = parseInt(req.query.page || "0"); 
+  const page = parseInt(req.query.page || "0");
   let collection = await db.collection(dbCollection);
-  const totalPlayers = await collection.aggregate({
-    '$group': {
-      '_id': '$eosid'
-    }
-  }, {
-    '$count': 'uniqueEosIdCount'
-  });
-  //const totalPlayers = await cursor.toArray();
+  const totalPlayers = await collection.countDocuments({});
   const totalPages = Math.ceil(totalPlayers / PAGE_SIZE);
   let results = await collection
     .find({})
@@ -66,10 +47,11 @@ router.get("/players", async (req, res) => {
     totalPages: totalPages,
     totalPlayers: totalPlayers,
     results: results,
-  })
+  });
   console.log(
     `Total player count is ${totalPlayers} and total pages is ${totalPages}`
   );
+  console.log(`Total unique EOSIDs is ${agg}`);
 });
 
 //This is to get a single record by id
