@@ -68,7 +68,7 @@ router.get("/players", async (req, res) => {
     totalPlayers: totalPlayers,
     results: results,
   });
-  onsole.log(
+  console.log(
     `Total player count is ${totalPlayers} and total pages is ${totalPages} and total unique players is ${eosidcount()}`
   );
   for await (const doc of agg) {
