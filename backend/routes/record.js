@@ -51,7 +51,7 @@ router.get("/players", async (req, res) => {
   const page = parseInt(req.query.page || "0");
   let collection = await db.collection(dbCollection);
   const totalPlayers = await collection.countDocuments({});
-  const totalplayers = await totalPlayers.toArray()
+  //const totalplayers = await totalPlayers.toArray()
   const totalPages = Math.ceil(totalPlayers / PAGE_SIZE);
   let results = await collection
     .find({})
