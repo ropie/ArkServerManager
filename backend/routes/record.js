@@ -29,12 +29,26 @@ router.get("/characters", async (req, res) => {
    });
 
    //This is to get all the players. (EOSIDs)
+
+const agg = [
+  {
+    '$group': {
+      '_id': '$eosid'
+    }
+  }, {
+    '$count': 'uniqueEosIdCount'
+  }
+];
+
+//const result = await cursor.toArray();
+
+
 router.get("/players", async (req, res) => {
   //console.log("Get requested");
   const PAGE_SIZE = 25;
   const page = parseInt(req.query.page || "0"); 
   let collection = await db.collection(dbCollection);
-  const totalPlayers = await collection.countDocuments({});
+  const totalPlayers = await collection.aggregate(agg);
   const totalPages = Math.ceil(totalPlayers / PAGE_SIZE);
   let results = await collection
     .find({})
