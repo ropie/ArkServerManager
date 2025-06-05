@@ -48,7 +48,13 @@ router.get("/players", async (req, res) => {
   const PAGE_SIZE = 25;
   const page = parseInt(req.query.page || "0"); 
   let collection = await db.collection(dbCollection);
-  const cursor = collection.aggregate(agg);
+  const cursor = collection.aggregate({
+    '$group': {
+      '_id': '$eosid'
+    }
+  }, {
+    '$count': 'uniqueEosIdCount'
+  });
   const totalPlayers = await cursor.toArray();
   const totalPages = Math.ceil(totalPlayers / PAGE_SIZE);
   let results = await collection
