@@ -1,5 +1,13 @@
 import { ChevronFirst, ChevronLast, MoreVertical } from "lucide-react";
 import { createContext, useContext, useState } from "react";
+import { NavLink } from "react-router-dom";
+import {
+  LifeBuoy,
+  BarChart3,
+  LayoutDashboard,
+  Settings,
+} from "lucide-react";
+import { IoAccessibility } from "react-icons/io5";
 
 const SidebarContext = createContext();
 export default function Sidebar({ children }) {
@@ -24,7 +32,7 @@ export default function Sidebar({ children }) {
           </button>
         </div>
         <SidebarContext.Provider value={{ expanded }}>
-          <ul className="flex-1 px-3">{children}</ul>
+          <ul className="flex-1 px-3"><SidebarItems/></ul>
         </SidebarContext.Provider>
         <div className="border-t flex p-3">
           <img
@@ -92,5 +100,29 @@ export function SidebarItem({ icon, text, active, alert }) {
         </div>
       )}
     </li>
+  );
+}
+
+export function SidebarItems() {
+  return (
+    <>
+      <NavLink to="/">
+        <SidebarItem
+          icon={<LayoutDashboard size={20} />}
+          text="Dashboard"
+          alert
+        />
+      </NavLink>
+      <NavLink to="/characters">
+        <SidebarItem icon={<BarChart3 size={20} />} text="Characters" />
+      </NavLink>
+      <NavLink to="/players">
+        <SidebarItem icon={<IoAccessibility size={20} />} text="Players" />
+      </NavLink>
+      <SidebarItem icon={<BarChart3 size={20} />} text="Tribes" />
+      <hr className="my-3" />
+      <SidebarItem icon={<Settings size={20} />} text="Settings" />
+      <SidebarItem icon={<LifeBuoy size={20} />} text="Help" />
+    </>
   );
 }

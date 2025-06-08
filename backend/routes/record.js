@@ -27,36 +27,32 @@ router.get("/characters", async (req, res) => {
 });
 
 //This is to get all the players. (EOSIDs)
-
-//const result = await cursor.toArray();
+async function countUniqueEOSID() {
+  const agg = [
+    {
+      $group: {
+        _id: "$eosid",
+      },
+    },
+    {
+      $count: "uniqueeosid",
+    },
+  ];
+  const collection = await db.collection(dbCollection);
+  let getCount = await collection.aggregate(agg).toArray();
+  const eosArray = getCount[0];
+  //console.log(`total unique players is ${eosArray.uniqueeosid}`);
+  const eosCount = eosArray.uniqueeosid
+  return eosCount;
+}
 
 router.get("/players", async (req, res) => {
-  async function eosidcount() {
-    const agg = [
-      {
-        $group: {
-          _id: "$eosid",
-        },
-      },
-      {
-        $count: "uniqueeosid",
-      },
-    ];
-
-    const aggCursor = collection.aggregate(agg);
-    
-    await aggCursor.forEach((uniqueeosidtotal) => {
-      console.log(`total unique eosid is ${uniqueeosidtotal.uniqueeosid}`);
-    });
-  }
-
-  //console.log("Get requested");
-  //const agg = [{ $group: { _id: "$eosid", count: { $sum: 1 } } }];
+  const totalUniqueEOS = await countUniqueEOSID();
+  console.log(totalUniqueEOS);
   const PAGE_SIZE = 25;
   const page = parseInt(req.query.page || "0");
   let collection = await db.collection(dbCollection);
   const totalPlayers = await collection.countDocuments({});
-  //const totalplayers = await totalPlayers.toArray()
   const totalPages = Math.ceil(totalPlayers / PAGE_SIZE);
   let results = await collection
     .find({})
@@ -66,12 +62,10 @@ router.get("/players", async (req, res) => {
   res.json({
     totalPages: totalPages,
     totalPlayers: totalPlayers,
+    uniqueEOS: totalUniqueEOS,
     results: results,
   });
-  console.log(
-    `Total player count is ${totalPlayers} and total pages is ${totalPages} and total unique players is ${eosidcount()}`
-  );
-
+  //console.log(totalUniqueEOS);
 });
 
 //This is to get a single record by id
@@ -93,7 +87,7 @@ router.get("/tribe/:tribe", async (req, res) => {
   res.send(results).status(200);
 });
 
-//This section creates a new record. Need to change this to match the original backend so there is only 1.
+/*/This section creates a new record. Need to change this to match the original backend so there is only 1.
 router.post("/", async (req, res) => {
   try {
     let newDocument = {
@@ -108,7 +102,7 @@ router.post("/", async (req, res) => {
     console.log(err);
     res.status(500).send("Error adding record");
   }
-});
+});*/
 
 //This section is to update a record  **Should be able to delete since we won't be updating players.**
 router.patch("/:id", async (req, res) => {
@@ -149,7 +143,7 @@ router.delete("/:id", async (req, res) => {
 //The below are from the original backend api.  Will need to test in dev kit.
 
 //Adding new players when first joining server
-router.post(`/players/add/:id`, (req, res) => {
+router.post(`/players/new/:id`, (req, res) => {
   const newPlayer = req.body;
   db.collection(dbCollection)
     .findOneAndUpdate(
@@ -222,8 +216,10 @@ router.post(`/tokens/:eos`, (req, res) => {
       console.log(updates);
     })
     .catch((err) => {
-      res.status(500).json({ error: `Could not update player` });
-      console.log("Error adding player information");
+      res
+        .status(500)
+        .json({ error: `Could not add tokens to ${req.params.eos}` });
+      console.log(`Could not add tokens to ${req.params.eos}`);
       console.log(updates);
     });
 });

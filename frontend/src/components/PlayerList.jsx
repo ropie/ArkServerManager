@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
+//const BACKEND_BASEURL = "http://localhost:5050";
 const BACKEND_BASEURL = "https://api.ropie.dev";
 
 const PlayerRecord = (props) => (
@@ -45,22 +46,33 @@ function online(f) {
 }
 
 export default function PlayerList() {
-  const [players, setPlayers] = useState([]);
-  const [totalpages, settotalpages] = useState();
-  const [totalplayers, settotalplayers] = useState();
+  const [players, setplayers] = useState([]);
+  const [totalpages, settotalpages] = useState(0);
+  const [totalplayers, settotalplayers] = useState(0);
   const [pageNumber, setpageNumber] = useState(0);
+  const [uniqueeosid, setuniqueeosid] = useState(0);
 
   const pages = new Array(totalpages).fill(null).map((v, i) => i);
 
   useEffect(() => {
-    fetch(`${BACKEND_BASEURL}/record/players?page=${pageNumber}`)
-      .then((response) => response.json())
-      .then(({ totalPlayers, totalPages, results }) => {
-        setPlayers(results);
-        settotalpages(totalPages);
-        settotalplayers(totalPlayers);
-        console.log(`${BACKEND_BASEURL}/record/players?page=${pageNumber + 1}`);
-      });
+     function getEOSCount() {
+      fetch(`${BACKEND_BASEURL}/record/players?page=${pageNumber}`)
+        .then((response) => response.json())
+        .then(({ totalPlayers, totalPages, results, uniqueEOS }) => {
+          setplayers(results);
+          settotalpages(totalPages);
+          settotalplayers(totalPlayers);
+          setuniqueeosid(uniqueEOS);
+          console.log(
+            `${BACKEND_BASEURL}/record/players?page=${pageNumber + 1} `
+          );
+          console.log(uniqueeosid)
+        });
+        
+    }
+console.log("Total players and EOS IDs " + totalpages +" and " + uniqueeosid + "." )
+    getEOSCount();
+    return
   }, [pageNumber]);
 
   function playerList() {
@@ -74,12 +86,15 @@ export default function PlayerList() {
   };
 
   const goToNext = () => {
-    setpageNumber(Math.min(totalpages -1  , pageNumber + 1));
-    console.log(pageNumber);
+    setpageNumber(Math.min(totalpages - 1, pageNumber + 1));
   };
 
   return (
     <>
+       <div className="w-full px-5 pb-4">
+        <h3 className="text-lg font-bold p-2">
+          Total character count: {uniqueeosid} I'm still working on this page.  Number is correct but still have some work to do with the actual list
+        </h3></div>
       <div className="w-auto px-5 pb-4">
         <div className="relative w-auto overflow-auto">
           <table className="table-auto border-collapse border border-zinc-400">
@@ -130,8 +145,10 @@ export default function PlayerList() {
               <p className="text-sm text-gray-700">
                 Showing{" "}
                 <span className="font-medium">{pageNumber * 25 + 1}</span> to{" "}
-                <span className="font-medium">{ Math.min(totalplayers, (pageNumber + 1) * 25) } </span> of{" "}
-                <span className="font-medium">{totalplayers}</span> results
+                <span className="font-medium">
+                  {Math.min(totalplayers, (pageNumber + 1) * 25)}{" "}
+                </span>{" "}
+                of <span className="font-medium">{totalplayers}</span> results
               </p>
             </div>
             <div>
